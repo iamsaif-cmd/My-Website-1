@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f8f9fa">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>SAIF LABS | Premium Front-End Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="logo.png" as="image">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Premium Preloader -->
+    <div id="preloader">
+        <div class="loader-content">
+            <div class="loader-logo-box">
+                <img src="logo.png" alt="SaifLabs" class="loader-logo">
+            </div>
+            <div class="loader-text">SAIF LABS</div>
+            <div class="loader-bar-container">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Layers -->
+    <div class="blob-container">
+        <div class="liquid-blob blob-1"></div>
+        <div class="liquid-blob blob-2"></div>
+        <div class="liquid-blob blob-3"></div>
+        <div class="liquid-blob blob-4"></div>
+        <div class="liquid-blob blob-5"></div>
+        <div class="liquid-blob blob-6"></div>
+        <div class="liquid-blob blob-7"></div>
+        <div class="liquid-blob blob-8"></div>
+        <div class="liquid-blob blob-9"></div>
+        <div class="liquid-blob blob-10"></div>
+        <div class="liquid-blob blob-11"></div>
+        <div class="liquid-blob blob-12"></div>
+        <div class="liquid-blob blob-13"></div>
+        <div class="liquid-blob blob-14"></div>
+        <div class="liquid-blob blob-15"></div>
+        <div class="liquid-blob blob-16"></div>
+        <div class="liquid-blob blob-17"></div>
+        <div class="liquid-blob blob-18"></div>
+        <div class="liquid-blob blob-19"></div>
+        <div class="liquid-blob blob-20"></div>
+    </div>
+
+
+    <div class="noise-overlay"></div>
+
+    <!-- SVG Filters -->
+    <svg style="display: none;">
+        <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="1" stitchTiles="stitch" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+        </filter>
+        <filter id="liquidy-glass">
+            <feTurbulence type="turbulence" baseFrequency="0.012" numOctaves="1" result="turbulence" />
+            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="15" xChannelSelector="R"
+                yChannelSelector="G" />
+        </filter>
+    </svg>
+
+    <nav class="glass-nav">
+        <!-- Liquid Mirror Reflection Layer -->
+        <div class="nav-reflection-container">
+            <div class="reflection-blob rb-1"></div>
+            <div class="reflection-blob rb-2"></div>
+            <div class="reflection-blob rb-3"></div>
+        </div>
+        <div class="nav-content">
+            <div class="logo">
+                <img src="logo.png" alt="SaifLabs Logo" class="nav-logo" decoding="async">
+                <span class="logo-text">SAIFLABS</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#projects">DEMO SITES</a></li>
+                <li><a href="#services">SERVICES</a></li>
+                <li><a href="#hire">HIRE ME</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="glass-card main-hero-card">
+                <div class="hero-logo-box">
+                    <img src="logo.png" alt="SaifLabs Brand" class="hero-logo" decoding="async">
+                </div>
+                <h1>SAIF LABS</h1>
+                <p class="hero-subtitle">Crafting the Future of Fluid Digital Experiences</p>
+                <div class="hero-description">
+                    <p>Welcome to my personal showcase hub. Here, I feature high-fidelity demo models and interactive prototypes designed exclusively for my clients to explore and experience.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="services-section">
+            <div class="section-header-container">
+                <div class="section-header-glass">
+                    <h2 class="section-title">OUR SERVICES</h2>
+                </div>
+            </div>
+            <div class="services-grid">
+                <!-- UI/UX Design -->
+                <div class="glass-card service-card">
+                    <div class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </div>
+                    <h3>UI/UX Design</h3>
+                    <p>Premium glassmorphism and minimalist interfaces tailored for high conversion.</p>
+                </div>
+
+                <!-- Front-end Dev -->
+                <div class="glass-card service-card">
+                    <div class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="16.5" y1="9.4" x2="7.5" y2="4.6"></line>
+                            <path
+                                d="M20.94 10.66L12 15.5l-8.94-4.84A2 2 0 0 0 2 12.4v5.2a2 2 0 0 0 1.06 1.76l8 4.33a2 2 0 0 0 1.88 0l8-4.33a2 2 0 0 0 1.06-1.76v-5.2a2 2 0 0 0-1.06-1.74z">
+                            </path>
+                            <path d="M12 22V15.5"></path>
+                            <polyline points="12 2 12 6.5"></polyline>
+                            <polyline points="20.25 6.75 16.5 8.75"></polyline>
+                            <polyline points="3.75 6.75 7.5 8.75"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Front-end Dev</h3>
+                    <p>Clean, high-performance HTML/CSS/JS code with buttery smooth animations.</p>
+                </div>
+
+                <!-- SEO Optimization -->
+                <div class="glass-card service-card">
+                    <div class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <h3>SEO Optimization</h3>
+                    <p>Structure-optimized pages that rank higher and load lightning fast.</p>
+                </div>
+
+                <!-- Custom Icons -->
+                <div class="glass-card service-card">
+                    <div class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Custom Icons</h3>
+                    <p>Bespoke SVG animations and 3D icons to make your brand stand out.</p>
+                </div>
+
+                <!-- UI/UX Prototyping -->
+                <div class="glass-card service-card">
+                    <div class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <h3>UI/UX Prototyping</h3>
+                    <p>High-fidelity interactive prototypes that bridge the gap between design and code.</p>
+                </div>
+
+                <!-- Motion Design -->
+                <div class="glass-card service-card">
+                    <div class="icon-box">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                    </div>
+                    <h3>Motion Design</h3>
+                    <p>Fluid, physics-based animations that make every interaction feel natural and premium.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects-section">
+            <div class="section-header-container">
+                <div class="section-header-glass">
+                    <h2 class="section-title">PROJECT DEMO SHOWCASE</h2>
+                </div>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="glass-card project-card" data-project="aura">
+                    <div class="project-img-box">
+                        <img src="assets/aura-architects.png"
+                            alt="Aura Architects" loading="lazy" decoding="async">
+                    </div>
+                    <div class="project-info">
+                        <h4>Aura Architects (Live Demo)</h4>
+                        <p>Interactive architectural portfolio concept with premium GSAP animations.</p>
+                    </div>
+                </div>
+
+                <!-- More to come card -->
+                <div class="glass-card more-to-come">
+                    <div class="more-content">
+                        <h3>More Projects Coming Soon</h3>
+                        <p>I'm currently crafting several new high-end digital experiences. Stay tuned for the next release.</p>
+                        <div class="loading-dots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="hire" class="cta">
+            <div class="section-header-container">
+                <div class="section-header-glass">
+                    <h2 class="section-title">HIRE ME</h2>
+                </div>
+            </div>
+            <div class="glass-card cta-card">
+                <h2>Ready to elevate your project?</h2>
+                <p class="cta-subtext">I'm currently available for new opportunities and collaborations.
+                    Let's build something extraordinary together.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Project Detail Modal (Outside main) -->
+    <div id="project-modal" class="modal-overlay">
+        <div class="glass-card modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-img" src="" alt="Project">
+                </div>
+                <div class="modal-text">
+                    <h2 id="modal-title"></h2>
+                    <p id="modal-desc"></p>
+                    <div class="tech-stack" id="modal-tech"></div>
+                    <a href="#" class="platform-btn fiverr" id="modal-link">View Project</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js" defer></script>
+</body>
+
+</html>
