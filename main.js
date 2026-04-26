@@ -1,53 +1,97 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Liquid Blobs Movement Engine
+    // Liquid Blobs Canvas Engine (120fps Optimized)
+    const canvas = document.getElementById('blob-canvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d', { alpha: false });
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    });
+
     const isMobile = window.innerWidth < 768;
-    const blobs = document.querySelectorAll('.liquid-blob');
+    const numBlobs = isMobile ? 12 : 20; // Reduced density for mobile
+    const colors = [
+        '#ff007f', '#00f2ff', '#7000ff', '#00ff88', '#ffaa00',
+        '#ff00ff', '#0088ff', '#ff3300', '#00ffcc', '#ffff00',
+        '#ff0055', '#5500ff', '#00ff55', '#ffbb00', '#00ccff',
+        '#ff00aa', '#88ff00', '#ff5500', '#0055ff', '#ff0000'
+    ];
+
     const blobData = [];
     let isModalOpen = false;
     let isPageHidden = document.hidden;
+    let isCanvasVisible = true;
 
     document.addEventListener('visibilitychange', () => {
         isPageHidden = document.hidden;
-    });    blobs.forEach((blob, index) => {
-        // Optimized reduction on mobile: keep every 2nd blob (approx 10 blobs)
-        if (isMobile && index % 2 !== 0) {
-            blob.style.display = 'none';
-            return;
-        }
-
-        blobData.push({
-            el: blob,
-            x: Math.random() * (window.innerWidth - 300),
-            y: Math.random() * (window.innerHeight - 300),
-            vx: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.8), // Even slower on mobile
-            vy: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.8),
-            rotation: Math.random() * 360,
-            vr: (Math.random() - 0.5) * (isMobile ? 0.05 : 0.1)
-        });
     });
 
+    // Initialize Blobs
+    for (let i = 0; i < numBlobs; i++) {
+        const radius = isMobile ? (150 + Math.random() * 120) : (250 + Math.random() * 200);
+        blobData.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * (isMobile ? 0.6 : 1.2),
+            vy: (Math.random() - 0.5) * (isMobile ? 0.6 : 1.2),
+            r: radius,
+            color: colors[i % colors.length]
+        });
+    }
+
     const updateBlobs = () => {
-        if (isModalOpen || isPageHidden) {
+        if (isModalOpen || isPageHidden || !isCanvasVisible) {
             requestAnimationFrame(updateBlobs);
             return;
         }
 
+        // Draw solid background to prevent trailing and optimize performance
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, width, height);
+        
+        ctx.globalCompositeOperation = 'source-over';
+
         blobData.forEach((data) => {
             data.x += data.vx;
             data.y += data.vy;
-            data.rotation += data.vr;
 
-            if (data.x < -400) data.vx = Math.abs(data.vx);
-            if (data.x > window.innerWidth) data.vx = -Math.abs(data.vx);
-            if (data.y < -400) data.vy = Math.abs(data.vy);
-            if (data.y > window.innerHeight) data.vy = -Math.abs(data.vy);
+            // Bounce mechanics
+            if (data.x < -data.r) data.vx = Math.abs(data.vx);
+            if (data.x > width + data.r) data.vx = -Math.abs(data.vx);
+            if (data.y < -data.r) data.vy = Math.abs(data.vy);
+            if (data.y > height + data.r) data.vy = -Math.abs(data.vy);
 
-            data.el.style.transform = `translate3d(${data.x}px, ${data.y}px, 0) rotate(${data.rotation}deg)`;
+            // Create soft glowing gradient
+            const grad = ctx.createRadialGradient(data.x, data.y, 0, data.x, data.y, data.r);
+            
+            // Convert hex to rgb to apply soft alpha fading
+            let hex = data.color.replace('#', '');
+            let r = parseInt(hex.substring(0,2), 16);
+            let g = parseInt(hex.substring(2,4), 16);
+            let b = parseInt(hex.substring(4,6), 16);
+            
+            grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.45)`); // Strong center
+            grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.15)`); // Mid fade
+            grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`); // Invisible edge
+
+            ctx.fillStyle = grad;
+            ctx.fillRect(data.x - data.r, data.y - data.r, data.r * 2, data.r * 2);
         });
+        
         requestAnimationFrame(updateBlobs);
     };
 
     updateBlobs();
+
+    // Pause canvas animation if scrolled out of view
+    const canvasObserver = new IntersectionObserver((entries) => {
+        isCanvasVisible = entries[0].isIntersecting;
+    }, { threshold: 0 });
+    canvasObserver.observe(canvas);
 
 
     // Project Data & Modal Engine

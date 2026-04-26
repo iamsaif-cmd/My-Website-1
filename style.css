@@ -141,191 +141,16 @@ body {
 
 
 /* Background Layers */
-.blob-container {
+.blob-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
-    /* Above HTML background */
-    overflow: hidden;
+    z-index: 1; /* Above HTML background */
     pointer-events: none;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    contain: strict;
+    transform: translateZ(0); /* Hardware acceleration */
 }
-
-.liquid-blob {
-    position: absolute;
-    filter: blur(80px);
-    opacity: 0.45;
-    will-change: transform;
-    pointer-events: none;
-    backface-visibility: hidden;
-}
-
-/* Vibrant Multi-Color Blobs */
-.blob-1 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, #ff007f, transparent);
-    top: -10%;
-    left: -10%;
-}
-
-.blob-2 {
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, #00f2ff, transparent);
-    bottom: -10%;
-    right: -10%;
-}
-
-.blob-3 {
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, #7000ff, transparent);
-    top: 30%;
-    right: 10%;
-}
-
-.blob-4 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, #00ff88, transparent);
-    bottom: 20%;
-    left: 10%;
-}
-
-.blob-5 {
-    width: 550px;
-    height: 550px;
-    background: radial-gradient(circle, #ffaa00, transparent);
-    top: 50%;
-    left: 50%;
-}
-
-.blob-6 {
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, #ff00ff, transparent);
-    top: 10%;
-    left: 40%;
-}
-
-.blob-7 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, #0088ff, transparent);
-    bottom: 40%;
-    right: 30%;
-}
-
-.blob-8 {
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, #ff3300, transparent);
-    top: 70%;
-    left: -5%;
-}
-
-.blob-9 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, #00ffcc, transparent);
-    top: 20%;
-    right: 40%;
-}
-
-.blob-10 {
-    width: 750px;
-    height: 750px;
-    background: radial-gradient(circle, #ffff00, transparent);
-    bottom: 5%;
-    left: 40%;
-}
-
-.blob-11 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, #ff0055, transparent);
-    top: 40%;
-    left: 80%;
-}
-
-.blob-12 {
-    width: 650px;
-    height: 650px;
-    background: radial-gradient(circle, #5500ff, transparent);
-    top: 80%;
-    right: 50%;
-}
-
-.blob-13 {
-    width: 550px;
-    height: 550px;
-    background: radial-gradient(circle, #00ff55, transparent);
-    bottom: 60%;
-    left: 70%;
-}
-
-.blob-14 {
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, #ffbb00, transparent);
-    top: -5%;
-    right: 20%;
-}
-
-.blob-15 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, #00ccff, transparent);
-    bottom: 30%;
-    right: 70%;
-}
-
-.blob-16 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, #ff00aa, transparent);
-    top: 60%;
-    right: -10%;
-}
-
-.blob-17 {
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, #88ff00, transparent);
-    top: 0%;
-    left: 20%;
-}
-
-.blob-18 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, #ff5500, transparent);
-    bottom: 10%;
-    right: 20%;
-}
-
-.blob-19 {
-    width: 550px;
-    height: 550px;
-    background: radial-gradient(circle, #0055ff, transparent);
-    top: 15%;
-    left: 5%;
-}
-
-.blob-20 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, #ff0000, transparent);
-    bottom: 50%;
-    left: -5%;
-}
-
 
 .noise-overlay {
     position: fixed;
@@ -335,8 +160,9 @@ body {
     height: 100%;
     z-index: 100;
     pointer-events: none;
-    filter: url(#noise);
-    opacity: 0.08;
+    /* Ultra-lightweight static noise replacing heavy SVG feTurbulence */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.12; /* Slightly adjusted to match previous SVG visual intensity */
 }
 
 /* Navigation */
