@@ -103,6 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
             img: "assets/aura-architects.png",
             link: "https://iamsaif-cmd.github.io/My-Website-2/"
         },
+        prismx: {
+            title: "PRISM X Landing Page",
+            desc: "A high-fidelity landing page for a next-gen device, featuring a fully responsive smartphone mockup, an interactive swipeable interface, and a highly optimized canvas particle system.",
+            tech: ["HTML5", "CSS3", "Vanilla JS", "Canvas API"],
+            img: "assets/prismx-demo.png",
+            link: "https://iamsaif-cmd.github.io/My-Website-3/"
+        },
         lumina: {
             title: "Lumina Capital Tracker",
             desc: "The next generation of asset management. Lumina provides a minimalist interface for tracking global investments, with high-fidelity glassmorphism panels and liquid background effects.",
