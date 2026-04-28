@@ -15,10 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const isMobile = window.innerWidth < 768;
     const numBlobs = isMobile ? 12 : 20; // Reduced density for mobile
     const colors = [
-        '#ff007f', '#00f2ff', '#7000ff', '#00ff88', '#ffaa00',
-        '#ff00ff', '#0088ff', '#ff3300', '#00ffcc', '#ffff00',
-        '#ff0055', '#5500ff', '#00ff55', '#ffbb00', '#00ccff',
-        '#ff00aa', '#88ff00', '#ff5500', '#0055ff', '#ff0000'
+        '#a0feff', '#c0ffee', '#e0c0ff', '#ffeaa0', '#ffc0e0',
+        '#c0e0ff', '#e0ffc0', '#ffd0c0', '#d0f0ff', '#fff0d0',
+        '#f0d0ff', '#d0ffd0', '#ffd0f0', '#e0f0ff', '#f0ffe0'
     ];
 
     const blobData = [];
@@ -32,12 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Blobs
     for (let i = 0; i < numBlobs; i++) {
-        const radius = isMobile ? (150 + Math.random() * 120) : (250 + Math.random() * 200);
+        const radius = isMobile ? (200 + Math.random() * 150) : (350 + Math.random() * 250);
         blobData.push({
             x: Math.random() * width,
             y: Math.random() * height,
-            vx: (Math.random() - 0.5) * (isMobile ? 0.6 : 1.2),
-            vy: (Math.random() - 0.5) * (isMobile ? 0.6 : 1.2),
+            vx: (Math.random() - 0.5) * (isMobile ? 0.4 : 0.7),
+            vy: (Math.random() - 0.5) * (isMobile ? 0.4 : 0.7),
             r: radius,
             color: colors[i % colors.length]
         });
@@ -74,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
             let g = parseInt(hex.substring(2,4), 16);
             let b = parseInt(hex.substring(4,6), 16);
             
-            grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.45)`); // Strong center
-            grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.15)`); // Mid fade
+            grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.55)`); // Strong center
+            grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.2)`); // Mid fade
             grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`); // Invisible edge
 
             ctx.fillStyle = grad;
@@ -134,6 +133,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.querySelector('main');
     const nav = document.querySelector('.glass-nav');
 
+    // Cleanup: Remove any legacy inline styles from previous versions
+    document.querySelectorAll('.project-card img').forEach(img => {
+        img.style.cursor = '';
+        img.style.pointerEvents = '';
+    });
+
+
+    // Image Viewer Lightbox Logic
+    const imageViewer = document.getElementById('image-viewer');
+    const viewerImg = document.getElementById('viewer-img');
+
+    let lastModalOpenTime = 0;
+
+    const openImageViewer = (src) => {
+        // Prevent opening if modal isn't active or if it just opened (prevents double-click bugs)
+        if (!modal.classList.contains('active')) return;
+        if (Date.now() - lastModalOpenTime < 400) return;
+
+        viewerImg.src = src;
+        imageViewer.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeImageViewer = (e) => {
+        if (e) e.stopPropagation();
+        imageViewer.classList.remove('active');
+        if (!isModalOpen) {
+            document.body.style.overflow = 'auto';
+        }
+    };
+
+    if (imageViewer) {
+        imageViewer.addEventListener('click', () => closeImageViewer());
+    }
+
     document.querySelectorAll('.project-card').forEach(card => {
         card.addEventListener('click', () => {
             const projectId = card.getAttribute('data-project');
@@ -162,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 modal.classList.add('active');
+                lastModalOpenTime = Date.now();
                 mainContent.classList.add('hide-content');
                 nav.classList.add('hide-content');
                 document.body.style.overflow = 'hidden';
@@ -172,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeModal = () => {
         modal.classList.remove('active');
+        imageViewer.classList.remove('active'); // Also close lightbox if open
         mainContent.classList.remove('hide-content');
         nav.classList.remove('hide-content');
         document.body.style.overflow = 'auto';
@@ -181,7 +217,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (modal) {
         modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
+            // If clicking the modal image, open the viewer
+            if (e.target === modalImg) {
+                openImageViewer(modalImg.src);
+            } 
+            // If clicking the overlay (background), close the modal
+            else if (e.target === modal) {
+                closeModal();
+            }
         });
     }
 
