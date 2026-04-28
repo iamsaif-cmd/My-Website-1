@@ -1202,12 +1202,13 @@ html {
 
 /* Mobile & Device Adaptation (Extreme Cooling Patch) */
 @media (max-width: 768px) {
-    .glass-nav, .glass-card, .modal-content, .section-header-glass {
+    .glass-nav, .glass-card, .modal-content, .section-header-glass, .more-to-come {
         backdrop-filter: blur(12px) saturate(250%) brightness(1.2) !important;
         -webkit-backdrop-filter: blur(12px) saturate(250%) brightness(1.2) !important;
         /* Bypass SVG filters on mobile to stop heating */
         filter: none !important;
         will-change: auto; /* Reduce memory pressure */
+        background: linear-gradient(135deg, rgba(15, 15, 15, 0.25) 0%, rgba(30, 30, 30, 0.15) 100%) !important;
     }
 
     .blob {
