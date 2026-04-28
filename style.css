@@ -1,10 +1,17 @@
 :root {
-    --glass-white: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-grey: rgba(15, 15, 15, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --glass-reflection: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.1) 100%);
     --text-dark: #000000;
     --text-muted: #333333;
     --font-family: 'Outfit', sans-serif;
     --transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Performance Layer */
+section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 1000px;
 }
 
 * {
@@ -17,6 +24,8 @@
     -webkit-touch-callout: none;
     touch-action: manipulation;
     /* Faster, more stable touch */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 img {
@@ -27,6 +36,9 @@ img {
 html {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px; /* Offset for floating nav bar */
+}
     overflow-x: hidden;
     background-color: #f8f9fa;
     /* Prevents white flashes */
@@ -147,9 +159,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Above HTML background */
+    z-index: 1;
+    /* Above HTML background */
     pointer-events: none;
-    transform: translateZ(0); /* Hardware acceleration */
+    transform: translateZ(0);
+    /* Hardware acceleration */
 }
 
 .noise-overlay {
@@ -162,7 +176,8 @@ body {
     pointer-events: none;
     /* Ultra-lightweight static noise replacing heavy SVG feTurbulence */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.12; /* Slightly adjusted to match previous SVG visual intensity */
+    opacity: 0.12;
+    /* Slightly adjusted to match previous SVG visual intensity */
 }
 
 /* Navigation */
@@ -175,17 +190,28 @@ body {
     width: 90%;
     max-width: 1200px;
     height: 64px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.08) 100%);
-    backdrop-filter: url(#liquidy-glass) blur(8px) saturate(250%) contrast(1.1) brightness(1.05);
-    -webkit-backdrop-filter: blur(8px) saturate(250%) contrast(1.1) brightness(1.05);
-    border: 3px solid rgba(255, 255, 255, 0.85);
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(45, 45, 45, 0.55) 50%, rgba(20, 20, 20, 0.7) 100%);
+    backdrop-filter: url(#nav-liquidy-glass) blur(2px) saturate(450%) brightness(1.4);
+    -webkit-backdrop-filter: url(#nav-liquidy-glass) blur(2px) saturate(450%) brightness(1.4);
+    border: 2px solid rgba(255, 255, 255, 0.9);
     border-radius: 40px;
     box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.04),
-        0 0 20px rgba(255, 255, 255, 0.25),
-        inset 0 0 15px rgba(255, 255, 255, 0.1);
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
     overflow: hidden;
-    transition: none;
+    transform: translateX(-50%);
+    transition: all 0.5s var(--transition);
+    will-change: transform, backdrop-filter;
+}
+
+.glass-nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--glass-reflection);
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
 }
 
 /* Removed Hover as requested */
@@ -221,7 +247,7 @@ body {
     font-size: 24px;
     font-weight: 600;
     letter-spacing: -1px;
-    color: #000;
+    color: #fff;
 }
 
 .nav-links {
@@ -232,7 +258,7 @@ body {
 
 .nav-links a {
     text-decoration: none;
-    color: #444;
+    color: #ccc;
     font-size: 13px;
     font-weight: 500;
     letter-spacing: 1.5px;
@@ -240,7 +266,7 @@ body {
 }
 
 .nav-links a:hover {
-    color: #000;
+    color: #fff;
 }
 
 .nav-reflection-container {
@@ -274,19 +300,38 @@ main {
 }
 
 .glass-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.08) 100%);
-    backdrop-filter: blur(12px) saturate(200%) contrast(1.1) brightness(1.02);
-    -webkit-backdrop-filter: blur(12px) saturate(200%) contrast(1.1) brightness(1.02);
-    border: 3px solid rgba(255, 255, 255, 0.7);
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.65) 0%, rgba(45, 45, 45, 0.45) 50%, rgba(20, 20, 20, 0.55) 100%);
+    backdrop-filter: url(#liquidy-glass) blur(1px) saturate(400%) contrast(1.4) brightness(1.25);
+    -webkit-backdrop-filter: blur(1px) saturate(400%) contrast(1.4) brightness(1.25);
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     border-radius: 50px;
     padding: 30px;
     box-shadow:
-        0 25px 50px rgba(0, 0, 0, 0.03),
-        0 0 25px rgba(255, 255, 255, 0.3),
-        inset 0 0 20px rgba(255, 255, 255, 0.15);
+        0 15px 35px rgba(0, 0, 0, 0.1),
+        inset 0 0 15px rgba(255, 255, 255, 0.05);
     transition: transform var(--transition), background var(--transition), border-color var(--transition);
-    will-change: transform;
-    /* Performance boost */
+    will-change: transform, backdrop-filter;
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card p {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 400;
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--glass-reflection);
+    pointer-events: none;
+    opacity: 0.6;
 }
 
 .main-hero-card {
@@ -337,17 +382,17 @@ main {
     line-height: 1.1;
     letter-spacing: -2px;
     margin-bottom: 15px;
-    color: #000;
+    color: #fff;
 }
 
 .hero-subtitle {
     font-size: clamp(0.9rem, 2vw, 1.1rem);
-    color: #000;
+    color: #fff;
     font-weight: 600;
     letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 25px;
-    opacity: 0.7;
+    opacity: 0.9;
 }
 
 .hero-description {
@@ -360,7 +405,7 @@ main {
 .hero-description p {
     font-size: 16px;
     line-height: 1.7;
-    color: #333;
+    color: #eee;
     font-weight: 400;
     letter-spacing: 0.2px;
 }
@@ -375,16 +420,27 @@ main {
 
 .section-header-glass {
     padding: 12px 40px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.1) 100%);
-    backdrop-filter: blur(20px) saturate(180%) contrast(1.05);
-    -webkit-backdrop-filter: blur(20px) saturate(180%) contrast(1.05);
-    border: 3px solid rgba(255, 255, 255, 0.8);
+    background: linear-gradient(170deg, rgba(20, 20, 20, 0.8) 0%, rgba(45, 45, 45, 0.6) 50%, rgba(20, 20, 20, 0.7) 100%);
+    backdrop-filter: url(#liquidy-glass) blur(2px) saturate(450%) contrast(1.4) brightness(1.3);
+    -webkit-backdrop-filter: blur(2px) saturate(450%) contrast(1.4) brightness(1.3);
+    border: 2px solid rgba(255, 255, 255, 1);
     border-radius: 60px;
     box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.03),
-        0 0 15px rgba(255, 255, 255, 0.25),
-        inset 0 0 10px rgba(255, 255, 255, 0.1);
+        0 15px 35px rgba(0, 0, 0, 0.04),
+        inset 0 0 15px rgba(255, 255, 255, 0.05);
     transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-header-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--glass-reflection);
+    pointer-events: none;
+    opacity: 0.4;
+    border-radius: inherit;
 }
 
 .section-header-glass:hover {
@@ -396,7 +452,7 @@ main {
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 5px;
-    color: #000;
+    color: #fff;
     margin-bottom: 0;
     text-transform: uppercase;
 }
@@ -440,7 +496,7 @@ main {
 .icon-svg {
     width: 100%;
     height: 100%;
-    color: #000;
+    color: #fff;
     stroke-width: 1.5;
     transition: all 0.5s ease;
     backface-visibility: hidden;
@@ -450,10 +506,10 @@ main {
 @media (hover: hover) {
     .service-card:hover {
         transform: translateY(-15px) scale(1.02);
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 255, 255, 0.4);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(20px) saturate(180%);
+        background: linear-gradient(135deg, rgba(30, 30, 30, 0.6) 0%, rgba(50, 50, 50, 0.4) 100%);
+        border-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+        backdrop-filter: url(#liquidy-glass) blur(10px) saturate(200%);
     }
 
     .service-card:hover .icon-box {
@@ -480,7 +536,7 @@ main {
     font-size: 19px;
     font-weight: 600;
     margin-bottom: 12px;
-    color: #000;
+    color: #fff;
     letter-spacing: -0.01em;
 }
 
@@ -600,11 +656,12 @@ main {
 .project-info h4 {
     font-size: 18px;
     margin-bottom: 10px;
+    color: #fff;
 }
 
 .project-info p {
     font-size: 14px;
-    color: var(--text-muted);
+    color: #ccc;
 }
 
 /* CTA */
@@ -700,19 +757,29 @@ main {
     overflow-y: auto;
     padding: 60px;
     border-radius: 60px;
-    background: linear-gradient(170deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.05) 100%);
-    backdrop-filter: blur(40px) saturate(250%) contrast(1.2) brightness(1.1);
-    -webkit-backdrop-filter: blur(40px) saturate(250%) contrast(1.2) brightness(1.1);
-    border: 3px solid rgba(255, 255, 255, 0.8);
-    /* Solid & Visible */
+    background: linear-gradient(170deg, rgba(20, 20, 20, 0.85) 0%, rgba(45, 45, 45, 0.65) 50%, rgba(20, 20, 20, 0.75) 100%);
+    backdrop-filter: url(#liquidy-glass) blur(2px) saturate(450%) contrast(1.5) brightness(1.3);
+    -webkit-backdrop-filter: blur(2px) saturate(450%) contrast(1.5) brightness(1.3);
+    border: 2px solid rgba(255, 255, 255, 1);
+    color: #ffffff;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     transform: scale(0.95) translateY(20px);
     transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     position: relative;
+    overflow: hidden;
     box-shadow:
         0 60px 120px rgba(0, 0, 0, 0.2),
-        0 0 40px rgba(255, 255, 255, 0.3),
-        /* Radiating Mega Shine */
-        inset 0 0 50px rgba(255, 255, 255, 0.2);
+        inset 0 0 50px rgba(255, 255, 255, 0.15);
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--glass-reflection);
+    pointer-events: none;
+    opacity: 0.5;
+    border-radius: inherit;
 }
 
 .modal-overlay.active .modal-content {
@@ -727,7 +794,7 @@ main {
     border: none;
     font-size: 32px;
     cursor: pointer;
-    color: #000;
+    color: #fff;
 }
 
 .modal-body {
@@ -756,13 +823,15 @@ main {
 .modal-text h2 {
     font-size: 32px;
     margin-bottom: 20px;
+    color: #fff;
 }
 
 .modal-text p {
     font-size: 16px;
     margin-bottom: 30px;
     line-height: 1.6;
-    opacity: 0.8;
+    opacity: 0.9;
+    color: #eee;
 }
 
 .tech-stack {
@@ -818,11 +887,12 @@ main {
     font-weight: 700;
     margin-bottom: 24px;
     letter-spacing: -1px;
+    color: #fff;
 }
 
 .cta-subtext {
     font-size: 18px;
-    color: #444;
+    color: #ccc;
     line-height: 1.6;
     margin-bottom: 48px;
     max-width: 600px;
@@ -847,8 +917,9 @@ main {
     .main-hero-card,
     .section-header-glass,
     .modal-content {
-        backdrop-filter: url(#liquidy-glass) blur(5px) saturate(120%) !important;
-        -webkit-backdrop-filter: blur(5px) saturate(120%) !important;
+        backdrop-filter: blur(15px) saturate(150%) contrast(1.1) !important;
+        -webkit-backdrop-filter: blur(15px) saturate(150%) contrast(1.1) !important;
+        background: linear-gradient(135deg, rgba(15, 15, 15, 0.2) 0%, rgba(30, 30, 30, 0.08) 100%) !important;
     }
 
     /* Bolder Blobs for Mobile */
@@ -924,8 +995,8 @@ main {
     .service-card:hover,
     .service-card:active {
         transform: none !important;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.08) 100%) !important;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.03) !important;
+        background: linear-gradient(135deg, rgba(20, 20, 20, 0.6) 0%, rgba(40, 40, 40, 0.4) 100%) !important;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2) !important;
     }
 
     .service-card:hover .icon-box,
@@ -993,8 +1064,8 @@ main {
         width: 92%;
         max-height: 85vh;
         border-radius: 30px;
-        background: rgba(255, 255, 255, 0.25) !important;
-        border: 1.5px solid rgba(255, 255, 255, 0.4);
+        background: linear-gradient(170deg, rgba(15, 15, 15, 0.2) 0%, rgba(30, 30, 30, 0.1) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3);
         overflow-y: auto;
         scrollbar-width: none;
         -ms-overflow-style: none;
@@ -1011,7 +1082,8 @@ main {
     }
 
     .modal-image {
-        height: 220px; /* Increased from 160px to show full image properly */
+        height: 220px;
+        /* Increased from 160px to show full image properly */
         margin-bottom: 0;
         border-radius: 16px;
     }
@@ -1062,8 +1134,8 @@ main {
     justify-content: center;
     text-align: center;
     min-height: 240px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-    border: 2px dashed rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.1) 0%, rgba(30, 30, 30, 0.05) 100%);
+    border: 1px dashed rgba(0, 0, 0, 0.15);
     cursor: default;
 }
 
@@ -1095,12 +1167,55 @@ main {
     animation: dotPulse 1.5s infinite ease-in-out;
 }
 
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
 
 @keyframes dotPulse {
-    0%, 100% { transform: scale(1); opacity: 0.3; }
-    50% { transform: scale(1.5); opacity: 0.8; }
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0.8;
+    }
+}
+
+html {
+    scroll-padding-top: 80px;
+}
+
+/* Mobile & Device Adaptation (Extreme Cooling Patch) */
+@media (max-width: 768px) {
+    .glass-nav, .glass-card, .modal-content, .section-header-glass {
+        backdrop-filter: blur(12px) saturate(250%) brightness(1.2) !important;
+        -webkit-backdrop-filter: blur(12px) saturate(250%) brightness(1.2) !important;
+        /* Bypass SVG filters on mobile to stop heating */
+        filter: none !important;
+        will-change: auto; /* Reduce memory pressure */
+    }
+
+    .blob {
+        opacity: 0.25;
+    }
+}
+
+/* High Refresh Rate & GPU Optimization (Desktop Only) */
+@media (min-width: 769px) {
+    .glass-nav, .glass-card, .modal-content, .section-header-glass {
+        will-change: transform, backdrop-filter;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        perspective: 1000px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1183,5 +1298,5 @@ main {
     max-height: 90vh;
     object-fit: contain;
     border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }

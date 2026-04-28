@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const isMobile = window.innerWidth < 768;
-    const numBlobs = isMobile ? 12 : 20; // Reduced density for mobile
+    const numBlobs = isMobile ? 8 : 20; // Drastic reduction for mobile cooling
     const colors = [
         '#a0feff', '#c0ffee', '#e0c0ff', '#ffeaa0', '#ffc0e0',
         '#c0e0ff', '#e0ffc0', '#ffd0c0', '#d0f0ff', '#fff0d0',
@@ -42,49 +42,72 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const updateBlobs = () => {
+    // Pre-render a high-quality blob for performance
+    const blobCanvas = document.createElement('canvas');
+    const bCtx = blobCanvas.getContext('2d');
+    const blobRes = 400; // Resolution of the pre-rendered blob
+    blobCanvas.width = blobCanvas.height = blobRes;
+    
+    const createBlobPattern = (color) => {
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = tempCanvas.height = blobRes;
+        const tCtx = tempCanvas.getContext('2d');
+        const grad = tCtx.createRadialGradient(blobRes/2, blobRes/2, 0, blobRes/2, blobRes/2, blobRes/2);
+        
+        let hex = color.replace('#', '');
+        let r = parseInt(hex.substring(0,2), 16);
+        let g = parseInt(hex.substring(2,4), 16);
+        let b = parseInt(hex.substring(4,6), 16);
+        
+        grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.55)`);
+        grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.2)`);
+        grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+        
+        tCtx.fillStyle = grad;
+        tCtx.fillRect(0, 0, blobRes, blobRes);
+        return tempCanvas;
+    };
+
+    const patterns = colors.map(c => createBlobPattern(c));
+
+    let lastTime = performance.now();
+    const updateBlobs = (currentTime) => {
+        const deltaTime = (currentTime - lastTime) / 16.67;
+        
+        // Throttling for mobile: Skip frames if interval is too short to keep it cool
+        if (isMobile && (currentTime - lastTime < 16)) { 
+             requestAnimationFrame(updateBlobs);
+             return;
+        }
+        
+        lastTime = currentTime;
+
         if (isModalOpen || isPageHidden || !isCanvasVisible) {
             requestAnimationFrame(updateBlobs);
             return;
         }
 
-        // Draw solid background to prevent trailing and optimize performance
         ctx.fillStyle = '#f8f9fa';
         ctx.fillRect(0, 0, width, height);
         
-        ctx.globalCompositeOperation = 'source-over';
+        blobData.forEach((data, i) => {
+            data.x += data.vx * deltaTime;
+            data.y += data.vy * deltaTime;
 
-        blobData.forEach((data) => {
-            data.x += data.vx;
-            data.y += data.vy;
-
-            // Bounce mechanics
             if (data.x < -data.r) data.vx = Math.abs(data.vx);
             if (data.x > width + data.r) data.vx = -Math.abs(data.vx);
             if (data.y < -data.r) data.vy = Math.abs(data.vy);
             if (data.y > height + data.r) data.vy = -Math.abs(data.vy);
 
-            // Create soft glowing gradient
-            const grad = ctx.createRadialGradient(data.x, data.y, 0, data.x, data.y, data.r);
-            
-            // Convert hex to rgb to apply soft alpha fading
-            let hex = data.color.replace('#', '');
-            let r = parseInt(hex.substring(0,2), 16);
-            let g = parseInt(hex.substring(2,4), 16);
-            let b = parseInt(hex.substring(4,6), 16);
-            
-            grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.55)`); // Strong center
-            grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.2)`); // Mid fade
-            grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`); // Invisible edge
-
-            ctx.fillStyle = grad;
-            ctx.fillRect(data.x - data.r, data.y - data.r, data.r * 2, data.r * 2);
+            // Use pre-rendered pattern instead of generating radial gradient every frame
+            const pattern = patterns[i % patterns.length];
+            ctx.drawImage(pattern, data.x - data.r, data.y - data.r, data.r * 2, data.r * 2);
         });
         
         requestAnimationFrame(updateBlobs);
     };
 
-    updateBlobs();
+    requestAnimationFrame(updateBlobs);
 
     // Pause canvas animation if scrolled out of view
     const canvasObserver = new IntersectionObserver((entries) => {
