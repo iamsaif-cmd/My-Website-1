@@ -132,6 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
             img: "assets/prismx-demo.png",
             link: "https://iamsaif-cmd.github.io/My-Website-3/"
         },
+        zenith: {
+            title: "ZENITH Luxury Fitness",
+            desc: "A high-end luxury fitness and wellness landing page featuring a procedural particle canvas background, a fresh dark-mode aesthetic with custom gold accents.",
+            tech: ["HTML5", "CSS3", "JavaScript", "GSAP"],
+            img: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1200",
+            link: "https://iamsaif-cmd.github.io/My-Website-4/"
+        },
         lumina: {
             title: "Lumina Capital Tracker",
             desc: "The next generation of asset management. Lumina provides a minimalist interface for tracking global investments, with high-fidelity glassmorphism panels and liquid background effects.",
