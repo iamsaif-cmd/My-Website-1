@@ -140,10 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
             link: "https://iamsaif-cmd.github.io/My-Website-4/"
         },
         lumina: {
-            title: "Lumina Capital Tracker",
-            desc: "The next generation of asset management. Lumina provides a minimalist interface for tracking global investments, with high-fidelity glassmorphism panels and liquid background effects.",
-            tech: ["Vanilla JS", "Three.js", "CSS Filters", "GSAP"],
-            img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200"
+            title: "Lumina | Luxury Dental Spa",
+            desc: "A premium dental clinic landing page featuring a 'Smile Matrix' virtual demo, 3D tooth visualization using Three.js, and a sophisticated medical-spa aesthetic.",
+            tech: ["HTML5", "CSS3", "JavaScript", "Three.js", "GSAP"],
+            img: "assets/lumina-dental.png",
+            link: "https://iamsaif-cmd.github.io/My-Website-5/"
         },
         product: {
             title: "Fluid Product Showcase",
